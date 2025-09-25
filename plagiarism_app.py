@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer
 import requests
 from bs4 import BeautifulSoup
 from PyPDF2 import PdfReader
-
+from sentence_transformers import SentenceTransformer, util
 # --- Page Setup ---
 st.set_page_config(page_title="Plagiarism Checker with Web Corpus", page_icon="📚", layout="wide")
 
@@ -156,4 +156,5 @@ if uploaded_file is not None:
                         st.markdown(f"> **Similarity: {match['score']:.2f}** - *'{match['sentence']}'*")
                         st.write("---")
                 else:
+
                     st.success("✅ No significant plagiarism detected.")
