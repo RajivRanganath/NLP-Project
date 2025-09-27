@@ -25,7 +25,6 @@ nltk.download('punkt', quiet=True)
 nltk.download('stopwords', quiet=True)
 
 class PlagiarismDetector:
-    # ... [All methods from PlagiarismDetector class are included here] ...
     def __init__(self, threshold=0.65):
         self.threshold = threshold
         self.stemmer = PorterStemmer()
@@ -94,14 +93,14 @@ class PlagiarismDetector:
         return results, stats
 
 class TextParaphraser:
-    # ... [All methods from TextParaphraser class are included here] ...
     def __init__(self): self.stemmer = PorterStemmer()
     def sentence_restructure_paraphrase(self, text):
         sentences = sent_tokenize(text); paraphrased = []
         for s in sentences:
             words = word_tokenize(s)
-            if len(words) > 5 and ',' in s: parts = s.split(',');
-            if len(parts) >=2: paraphrased.append(f"{parts[1].strip()}, {parts[0].strip()}"); continue
+            if len(words) > 5 and ',' in s: 
+                parts = s.split(',')
+                if len(parts) >=2: paraphrased.append(f"{parts[1].strip()}, {parts[0].strip()}"); continue
             replacements = {'however':'nevertheless','therefore':'consequently','because':'since', 'although':'while','important':'significant','show':'demonstrate', 'find':'discover','use':'utilize','help':'assist','big':'large','small':'minor'}
             mod = s.lower()
             for old,new in replacements.items(): mod = mod.replace(old,new)
@@ -185,7 +184,6 @@ if engine_choice == 'TF-IDF Local Checker':
         if uploaded_file and detector:
             if uploaded_file.size > 10*1024*1024: st.error("❌ Max file size: 10 MB")
             elif st.button("🔍 Start Analysis", type="primary", key="tfidf_button"):
-                # ... [UI logic for TF-IDF analysis] ...
                 progress_bar = st.progress(0); status_text = st.empty()
                 try:
                     status_text.text("Step 1/4: Extracting text…"); progress_bar.progress(25)
@@ -213,13 +211,16 @@ if engine_choice == 'TF-IDF Local Checker':
                     else: st.success("🎉 No significant plagiarism detected!"); st.balloons()
                 except Exception as e: st.error(f"❌ Error: {str(e)}"); st.code(traceback.format_exc())
     with tab2:
-        # ... [UI logic for Paraphraser tab] ...
         st.header("Text Paraphrasing Tool")
         input_method = st.radio("Choose input method:", ["Type/Paste Text", "Upload Text File"], key="para_radio")
         input_text = ""
-        if input_method == "Type/Paste Text": input_text = st.text_area("Enter text to paraphrase", height=200, key="para_text_area")
-        else: up_txt = st.file_uploader("Upload text file", type=['txt'], key="para_uploader");
-        if up_txt: input_text = str(up_txt.read(), "utf-8"); st.text_area("Uploaded preview", input_text[:500], height=150, key="para_preview")
+        if input_method == "Type/Paste Text": 
+            input_text = st.text_area("Enter text to paraphrase", height=200, key="para_text_area")
+        else: 
+            up_txt = st.file_uploader("Upload text file", type=['txt'], key="para_uploader")
+            if up_txt:
+                input_text = str(up_txt.read(), "utf-8")
+                st.text_area("Uploaded preview", input_text[:500], height=150, key="para_preview")
         if st.button("🔄 Paraphrase Text", type="primary", key="para_button") and input_text:
             if len(input_text.split()) > 2000: st.error("❌ Max 2000 words.")
             else:
@@ -230,7 +231,6 @@ if engine_choice == 'TF-IDF Local Checker':
                     with col2: st.text_area("Paraphrased", out, height=300, key="para_para")
                     st.download_button("📥 Download", out, file_name=f"paraphrased_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt")
     with tab3:
-        # ... [UI logic for Analytics tab] ...
         st.header("📊 Analytics Dashboard")
         if not st.session_state.plag_stats or not st.session_state.plag_results: st.info("🔎 No analysis data yet. Run a plagiarism check in Tab 1.")
         else:
@@ -280,4 +280,4 @@ else:
 
 # Footer
 st.markdown("---")
-st.caption(f"Dashboard updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+st.caption(f"Dashboard updated: {datetime.now().strftime('%Y-%m-%d %H:%M%S')}")
