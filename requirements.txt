@@ -1,7 +1,12 @@
-streamlit
-sentence-transformers
-requests
 beautifulsoup4
-PyPDF2
-numpy
 faiss-cpu
+matplotlib
+nltk
+numpy
+pandas
+plotly
+PyPDF2
+requests
+scikit-learn
+sentence-transformers
+streamlit
