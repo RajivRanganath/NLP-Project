@@ -237,7 +237,6 @@ if engine_choice == 'TF-IDF Local Checker':
             input_text = st.text_area("Enter text to paraphrase", height=200, key="para_text_area")
         else: 
             up_txt = st.file_uploader("Upload text file", type=['txt'], key="para_uploader")
-            # --- FIX: Nest this check inside the 'else' block ---
             if up_txt:
                 input_text = str(up_txt.read(), "utf-8")
                 st.text_area("Uploaded preview", input_text[:500], height=150, key="para_preview")
@@ -245,7 +244,7 @@ if engine_choice == 'TF-IDF Local Checker':
             if len(input_text.split()) > 2000: st.error("❌ Max 2000 words.")
             else:
                 with st.spinner("Paraphrasing…"):
-                    out = paraphraser.sentence_restructure_paraphrase(input_text); out = '. '.join(s.strip().capitalize() for s in out.split('. '))
+                    out = paraphraser.sentence_restructure_paraphrase(text); out = '. '.join(s.strip().capitalize() for s in out.split('. '))
                     col1, col2 = st.columns(2)
                     with col1: st.text_area("Original", input_text, height=300, key="para_orig")
                     with col2: st.text_area("Paraphrased", out, height=300, key="para_para")
@@ -300,4 +299,4 @@ else: # This block is for the 'Semantic Web Checker'
 
 # Footer
 st.markdown("---")
-st.caption(f"Dashboard updated: {datetime.now().strftime('%Y-%m-%d %H:%M%S')}")
+st.caption(f"Dashboard updated: {datetime.now().strftime('%Y-%m-%d %H%M%S')}")
