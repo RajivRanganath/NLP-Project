@@ -15,19 +15,23 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 
 # =============================================================================
-# NEW: Setup Function for NLTK Data
+# Setup Function for NLTK Data (Corrected)
 # =============================================================================
 def setup_nltk():
     """
     Downloads the necessary NLTK data packages if they are not already present.
     """
     try:
+        # Check if the 'punkt' tokenizer data is available
         nltk.data.find('tokenizers/punkt')
-    except nltk.downloader.DownloadError:
+    except LookupError: # This is the correct exception to catch
+        st.info("Downloading NLTK 'punkt' data...")
         nltk.download('punkt')
     try:
+        # Check if the 'stopwords' data is available
         nltk.data.find('corpora/stopwords')
-    except nltk.downloader.DownloadError:
+    except LookupError: # This is the correct exception to catch
+        st.info("Downloading NLTK 'stopwords' data...")
         nltk.download('stopwords')
 
 # --- Run the setup function once at the start ---
@@ -63,7 +67,6 @@ class PlagiarismDetector:
             raise Exception(f"Error reading PDF: {str(e)}")
 
     def get_sentences(self, text):
-        # This will now work because 'punkt' is guaranteed to be downloaded
         sentences = sent_tokenize(text)
         return [s.strip() for s in sentences if len(s.strip()) > 20 and not s.startswith('--- Page')]
 
