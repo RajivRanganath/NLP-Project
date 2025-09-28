@@ -19,7 +19,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 
 # =============================================================================
-# NEW: Setup Function for NLTK Data
+# Setup Function for NLTK Data (Corrected)
 # =============================================================================
 def setup_nltk():
     """
@@ -60,7 +60,6 @@ class PlagiarismDetector:
             return self.preprocess_text(text)
         except Exception as e: raise Exception(f"Error reading PDF: {str(e)}")
     def get_sentences(self, text):
-        # This will now work correctly
         sentences = sent_tokenize(text)
         return [s.strip() for s in sentences if len(s.strip()) > 20 and not s.startswith('--- Page')]
     def get_semantic_fingerprint(self, text):
@@ -117,7 +116,7 @@ class TextParaphraser:
         sentences = sent_tokenize(text); paraphrased = []
         for s in sentences:
             words = word_tokenize(s)
-            if len(words) > 5 and ',' in s: 
+            if len(words) > 5 and ',' in s:
                 parts = s.split(',')
                 if len(parts) >=2: paraphrased.append(f"{parts[1].strip()}, {parts[0].strip()}"); continue
             replacements = {'however':'nevertheless','therefore':'consequently','because':'since', 'although':'while','important':'significant','show':'demonstrate', 'find':'discover','use':'utilize','help':'assist','big':'large','small':'minor'}
@@ -233,9 +232,9 @@ if engine_choice == 'TF-IDF Local Checker':
         st.header("Text Paraphrasing Tool")
         input_method = st.radio("Choose input method:", ["Type/Paste Text", "Upload Text File"], key="para_radio")
         input_text = ""
-        if input_method == "Type/Paste Text": 
+        if input_method == "Type/Paste Text":
             input_text = st.text_area("Enter text to paraphrase", height=200, key="para_text_area")
-        else: 
+        else:
             up_txt = st.file_uploader("Upload text file", type=['txt'], key="para_uploader")
             if up_txt:
                 input_text = str(up_txt.read(), "utf-8")
