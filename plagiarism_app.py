@@ -27,10 +27,10 @@ def setup_nltk():
     Downloads the necessary NLTK data packages if they are not already present.
     """
     try:
-        nltk.data.find('tokenizers/punkt')
+        nltk.data.find('tokenizers/punkt_tab')
     except LookupError:
-        st.info("Downloading NLTK 'punkt' data...")
-        nltk.download('punkt')
+        st.info("Downloading NLTK 'punkt_tab' data...")
+        nltk.download('punkt_tab')
     try:
         nltk.data.find('corpora/stopwords')
     except LookupError:
