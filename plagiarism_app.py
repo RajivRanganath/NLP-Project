@@ -19,7 +19,8 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 
 # =============================================================================
-# Setup Function for NLTK Data (Corrected)
+# FINAL FIX: Setup Function for NLTK Data
+# This function runs first to ensure NLTK data is available on the server.
 # =============================================================================
 def setup_nltk():
     """
@@ -36,7 +37,7 @@ def setup_nltk():
         st.info("Downloading NLTK 'stopwords' data...")
         nltk.download('stopwords')
 
-# --- Run the setup function once at the start ---
+# --- Run the setup function once at the start of the script ---
 setup_nltk()
 
 # =============================================================================
@@ -116,7 +117,7 @@ class TextParaphraser:
         sentences = sent_tokenize(text); paraphrased = []
         for s in sentences:
             words = word_tokenize(s)
-            if len(words) > 5 and ',' in s:
+            if len(words) > 5 and ',' in s: 
                 parts = s.split(',')
                 if len(parts) >=2: paraphrased.append(f"{parts[1].strip()}, {parts[0].strip()}"); continue
             replacements = {'however':'nevertheless','therefore':'consequently','because':'since', 'although':'while','important':'significant','show':'demonstrate', 'find':'discover','use':'utilize','help':'assist','big':'large','small':'minor'}
@@ -232,10 +233,11 @@ if engine_choice == 'TF-IDF Local Checker':
         st.header("Text Paraphrasing Tool")
         input_method = st.radio("Choose input method:", ["Type/Paste Text", "Upload Text File"], key="para_radio")
         input_text = ""
-        if input_method == "Type/Paste Text":
+        if input_method == "Type/Paste Text": 
             input_text = st.text_area("Enter text to paraphrase", height=200, key="para_text_area")
-        else:
+        else: 
             up_txt = st.file_uploader("Upload text file", type=['txt'], key="para_uploader")
+            # --- FIX: Nest this check inside the 'else' block ---
             if up_txt:
                 input_text = str(up_txt.read(), "utf-8")
                 st.text_area("Uploaded preview", input_text[:500], height=150, key="para_preview")
@@ -259,7 +261,7 @@ if engine_choice == 'TF-IDF Local Checker':
             if flagged:
                 st.subheader("Flagged Sentences (interactive)"); df_flag = pd.DataFrame([{"Sentence": r["sentence"],"Similarity %": round(r["similarity"]*100,1),"Source": r["source"] or "N/A"} for r in flagged]); st.dataframe(df_flag.style.background_gradient(subset=["Similarity %"], cmap="Reds"), use_container_width=True)
 
-else:
+else: # This block is for the 'Semantic Web Checker'
     # --- UI for Semantic Web Checker ---
     model = load_semantic_model()
     if 'reference_library' not in st.session_state: st.session_state.reference_library = []
