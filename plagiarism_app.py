@@ -19,8 +19,7 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.stem import PorterStemmer
 
 # =============================================================================
-# FINAL FIX: Setup Function for NLTK Data
-# This function runs first to ensure NLTK data is available on the server.
+# Setup Function for NLTK Data
 # =============================================================================
 def setup_nltk():
     """
@@ -244,7 +243,8 @@ if engine_choice == 'TF-IDF Local Checker':
             if len(input_text.split()) > 2000: st.error("❌ Max 2000 words.")
             else:
                 with st.spinner("Paraphrasing…"):
-                    out = paraphraser.sentence_restructure_paraphrase(text); out = '. '.join(s.strip().capitalize() for s in out.split('. '))
+                    # --- FINAL FIX: Use the correct variable 'input_text' ---
+                    out = paraphraser.sentence_restructure_paraphrase(input_text); out = '. '.join(s.strip().capitalize() for s in out.split('. '))
                     col1, col2 = st.columns(2)
                     with col1: st.text_area("Original", input_text, height=300, key="para_orig")
                     with col2: st.text_area("Paraphrased", out, height=300, key="para_para")
