@@ -1,4 +1,5 @@
 streamlit
+matplotlib
 pandas
 plotly
 scikit-learn
@@ -8,3 +9,4 @@ sentence-transformers
 requests
 beautifulsoup4
 faiss-cpu
+
